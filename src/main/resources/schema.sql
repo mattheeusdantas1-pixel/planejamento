@@ -1,0 +1,50 @@
+CREATE TABLE empresa (
+	id BIGINT AUTO_INCREMENT PRIMARY KEY,
+	nome VARCHAR(100) NOT NULL,
+	missao VARCHAR(500),
+	visao VARCHAR(500)
+);
+
+CREATE TABLE departamento (
+	id BIGINT AUTO_INCREMENT PRIMARY KEY,
+	nome VARCHAR(100) NOT NULL,
+	responsavel VARCHAR(100)
+);
+
+CREATE TABLE objetivo (
+	id BIGINT AUTO_INCREMENT PRIMARY KEY,
+	titulo VARCHAR(150) NOT NULL,
+	descricao VARCHAR(500),
+	perspectiva VARCHAR(30) NOT NULL,
+	empresa_id BIGINT NOT NULL,
+	FOREIGN KEY (empresa_id) REFERENCES empresa(id) ON DELETE CASCADE
+);
+
+CREATE TABLE meta (
+	id BIGINT AUTO_INCREMENT PRIMARY KEY,
+	descricao VARCHAR(300) NOT NULL,
+	prazo DATE,
+	objetivo_id BIGINT NOT NULL,
+	departamento_id BIGINT,
+	FOREIGN KEY (objetivo_id) REFERENCES objetivo(id) ON DELETE CASCADE,
+	FOREIGN KEY (departamento_id) REFERENCES departamento(id)
+);
+
+CREATE TABLE metrica (
+	id BIGINT AUTO_INCREMENT PRIMARY KEY,
+	descricao VARCHAR(300) NOT NULL,
+	unidade VARCHAR(50),
+	valor_alvo DOUBLE,
+	meta_id BIGINT NOT NULL,
+	FOREIGN KEY (meta_id) REFERENCES meta(id) ON DELETE CASCADE
+);
+
+CREATE TABLE indicador (
+	id BIGINT AUTO_INCREMENT PRIMARY KEY,
+	valor DOUBLE NOT NULL,
+	data_medicao DATE NOT NULL,
+	observacao VARCHAR(300),
+	metrica_id BIGINT NOT NULL,
+	FOREIGN KEY (metrica_id) REFERENCES metrica(id) ON DELETE CASCADE
+);
+	
